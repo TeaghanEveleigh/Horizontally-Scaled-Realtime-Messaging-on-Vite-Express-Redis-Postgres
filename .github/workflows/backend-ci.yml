@@ -5,21 +5,21 @@ on:
     branches:
       - main
     paths:
-      - 'backend/**'
-      - '.github/workflows/backend-ci.yml'
+      - 'Backend/**'
+      - '.github/workflows/Backend-ci.yml'
   pull_request:
     branches:
       - main
     paths:
-      - 'backend/**'
-      - '.github/workflows/backend-ci.yml'
+      - 'Backend/**'
+      - '.github/workflows/Backend-ci.yml'
 
 jobs:
   quality-checks:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: ./Backend
 
     steps:
       - name: Checkout code
@@ -28,9 +28,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: 'backend/.nvmrc'
+          node-version-file: 'Backend/.nvmrc'
           cache: 'npm'
-          cache-dependency-path: 'backend/package-lock.json'
+          cache-dependency-path: 'Backend/package-lock.json'
 
       - name: Install dependencies
         run: npm ci
