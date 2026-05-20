@@ -11,6 +11,12 @@
 
 A horizontally-scalable realtime messaging app, built to learn production distributed-systems infrastructure end-to-end.
 
+## Current Phase : Phase 1 
+- Current phase of developement is the application developement phase(Phase 1)
+-  My primary goal is to develope the application with post phases being related primarily to applying infrastructure decisions
+- This phase is less considerable overall primarily focused on integration of sockets to enable chat as well as auth and frontend. 
+
+
 ## Stack
 
 - **TypeScript** — across frontend and backend
@@ -29,14 +35,18 @@ A horizontally-scalable realtime messaging app, built to learn production distri
 
 - [x] Project concept and scope defined
 - [x] Core stack chosen (TypeScript, Vite, Express, Postgres, Redis, Docker, shadcn/ui)
+- [x] Vitest Setup for backend testing (Will Be used for integration and unit tests) End to end testing moved to the todo seciton
+
 
 ## 🚧 In Progress
 
 - [ ] Selecting remaining tools: ORM, auth library, realtime transport, testing stack, hosting provider, observability tooling
 - [ ] Initial project scaffolding
-
+## ⚡ Ongoing 
+- Unit tests to be done throughout developement cycle
+- Integration tests to be completed after module completion on an ongoing basis
 ## 🔲 Todo
-
+- [x] Complete End to End Testing
 ### Core Application
 
 - [ ] Authentication and session management
