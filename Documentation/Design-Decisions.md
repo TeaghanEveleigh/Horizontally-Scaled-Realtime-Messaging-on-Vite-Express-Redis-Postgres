@@ -6,7 +6,10 @@ The purpose of this doc is to serve as a space for all the decisions made throug
 
 - **Testing:** I decided to go with Vitest, vitest just overall works better with the imports structure and modern ts structure.
 
+- **Reponse Shape**  "naked" for singular resources (It just returns the resource) & Enveloped for responses containing multiple resources. 
+
+- **Caching & Pub/Sub**: To be done through Redis
 
 ## Frontend Decisions
 
-- State management through Redis 
+- State management through Redux

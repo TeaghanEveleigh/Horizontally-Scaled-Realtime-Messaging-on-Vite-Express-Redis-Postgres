@@ -1,5 +1,5 @@
 // index.js
-import { query } from "#config/neon-connection.js";
+import { query } from "#config/db.js";
 import { requestLogger } from "#middleware/request-logger.js";
 import express from "express";
 
