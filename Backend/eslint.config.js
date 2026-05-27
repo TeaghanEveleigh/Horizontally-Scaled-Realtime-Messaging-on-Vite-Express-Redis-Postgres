@@ -22,6 +22,12 @@ export default tseslint.config(
   },
   perfectionist.configs["recommended-natural"],
   {
+    // project-wide rule overrides — no `files` key, so applies to everything
+    rules: {
+      "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+    },
+  },
+  {
     files: ["**/*.test.ts", "**/*.spec.ts"],
     plugins: {
       vitest,
@@ -29,6 +35,7 @@ export default tseslint.config(
     rules: {
       ...vitest.configs.recommended.rules,
       "@typescript-eslint/unbound-method": "off",
+      "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     },
   },
 );

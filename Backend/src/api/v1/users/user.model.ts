@@ -1,18 +1,20 @@
 import { query } from "#config/db.js";
+import { getSetClauseAndValues } from "#utils/db-operations.js";
 
 export type CreateUserInput = Omit<User, "created_at" | "id">;
-export interface UpdateUserInput {
-    email?: string
-    password_hash? : string 
-    username? : string  
-}
-export interface User {
+
+export type UpdateUserInput = {
+  email?: string;
+  password_hash?: string;
+  username?: string;
+};
+export type User = {
   created_at: Date;
   email: string;
   id: string;
   password_hash: string;
   username: string;
-}
+};
 
 export const UserModel = {
   create: (user: CreateUserInput) =>
@@ -22,12 +24,13 @@ export const UserModel = {
             RETURNING id, email, username, created_at`,
       [user.email, user.username, user.password_hash],
     ),
-  deleteById : (id : string ) => 
-    query<User>(`
+  deleteById: (id: string) =>
+    query<User>(
+      `
         DELETE 
         FROM users
-        WHERE user.id = $1`, 
-        [id]
+        WHERE user.id = $1`,
+      [id],
     ),
   findAll: () =>
     query<User>(
@@ -50,23 +53,20 @@ export const UserModel = {
             ORDER BY id LIMIT $1 OFFSET $2`,
       [limit, offset],
     ),
-   updateById: (id: string, valuesToChange: UpdateUserInput) => {
-  // Get list of non-undefined changes
-  const changes = Object.entries(valuesToChange).filter(([, value]) => value !== undefined)
+  updateById: (id: string, valuesToChange: UpdateUserInput) => {
+    // Get list of non-undefined changes
 
-  // If there are no changes, just return the unchanged user
-  if (changes.length < 1) return UserModel.findById(id)
+    const result = getSetClauseAndValues(valuesToChange);
+    // If there are no changes, just return the unchanged user
+    if (result === null) return UserModel.findById(id);
+    const { clause, values } = result;
 
-  // start at 2 because the id occupies $1
-  const setClause = changes.map(([key], index) => `${key} = $${index + 2}`).join(', ')
-  const values = changes.map(([, value]) => value)
-
-  return query<User>(
-    `UPDATE users
-     SET ${setClause}
+    return query<User>(
+      `UPDATE users
+     SET ${clause}
      WHERE id = $1
      RETURNING id, email, username, created_at`,
-    [id, ...values]
-  )
-},
+      [id, ...values],
+    );
+  },
 };
