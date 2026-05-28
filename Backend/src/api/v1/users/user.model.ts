@@ -1,16 +1,20 @@
 import { query } from "#config/db.js";
 import { getSetClauseAndValues } from "#utils/db-operations.js";
-import { CreateUserInput, UpdateUserInput, User } from "./user.types.js";
+
+import { UpdateUserInput, User } from "./user.types.js";
 
 
 export const UserModel = {
-  create: (user: CreateUserInput) =>
-    query<User>(
-      `INSERT INTO (email , username , password_hash) 
+  create: async (user: Omit<User , 'created_at' | 'id' >) => {
+    const rows = await query<User>(
+      `INSERT INTO users (email , username , password_hash) 
             VALUES ($1 , $2, $3) 
             RETURNING id, email, username, created_at`,
       [user.email, user.username, user.password_hash],
-    ),
+    )
+    return rows[0]?? null;
+
+  },
   deleteById: (id: string) =>
     query<User>(
       `
@@ -25,13 +29,26 @@ export const UserModel = {
             FROM users`,
     ),
 
-  findById: (id: string) =>
-    query<User>(
+  findByEmail : async (email : string) => { 
+    const rows =  await query<User>(
+      `SELECT id, email, username, created_at 
+            FROM users 
+            WHERE email= $1`,
+      [email],
+    )
+    return rows[0]?? null;
+  },
+    findById: async (id: string) => {
+    const rows = await query<User>(
       `SELECT id, email, username, created_at 
             FROM users 
             WHERE id= $1`,
       [id],
-    ),
+    )
+      return rows[0]?? null;
+
+  } ,
+    
 
   findInRange: (limit: number, offset: number) =>
     query<User>(

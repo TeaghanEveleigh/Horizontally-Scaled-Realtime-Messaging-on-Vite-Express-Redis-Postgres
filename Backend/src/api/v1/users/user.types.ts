@@ -1,21 +1,19 @@
 
-export type User = {
-  id: string;
-  email: string;
-  username: string;
-  password_hash: string;
-  created_at: Date;
-};
-
-
 export type CreateUserInput = {
   email: string;
+  password: string;       // plain text — service layer hashes it
   username: string;
-  password_hash: string;       // plain text — service layer hashes it
 };
+
+export type PublicUser = Omit<User, 'password_hash'>;
 
 export type UpdateUserInput = Partial<CreateUserInput>;
 
-
-
-export type PublicUser = Omit<User, 'password_hash'>;
+// DB Row for user Table
+export type User = {
+  created_at: Date;
+  email: string;
+  id: string;
+  password_hash: string;
+  username: string;
+};
